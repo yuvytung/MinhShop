@@ -404,21 +404,6 @@ export const PostUpdate = (props: IPostUpdateProps) =>
                 </UncontrolledTooltip>
               </AvGroup>
               <AvGroup>
-                <Label for="simple-post-postDetails">
-                  <Translate contentKey="minhShopApp.simplePost.postDetails">Post Details</Translate>
-                </Label>
-                <AvInput id="simple-post-postDetails" data-cy="postDetails" type="select" className="form-control" name="postDetails.id">
-                  <option value="" key="0"/>
-                  {postDetails
-                    ? postDetails.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.postDetailsId}
-                      </option>
-                    ))
-                    : null}
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
                 <Label for="simple-post-typePost">
                   <Translate contentKey="minhShopApp.simplePost.typePost">Type Post</Translate>
                 </Label>
@@ -495,33 +480,6 @@ export const PostUpdate = (props: IPostUpdateProps) =>
                 />
                 <UncontrolledTooltip target="contentLabel">
                   <Translate contentKey="minhShopApp.post.help.content"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="roleLabel" for="post-role">
-                  <Translate contentKey="minhShopApp.post.role">Role</Translate>
-                </Label>
-                <AvField id="post-role" data-cy="role" type="text" name="role"/>
-                <UncontrolledTooltip target="roleLabel">
-                  <Translate contentKey="minhShopApp.post.help.role"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="createdByLabel" for="post-createdBy">
-                  <Translate contentKey="minhShopApp.post.createdBy">Created By</Translate>
-                </Label>
-                <AvField id="post-createdBy" data-cy="createdBy" type="text" name="createdBy"/>
-                <UncontrolledTooltip target="createdByLabel">
-                  <Translate contentKey="minhShopApp.post.help.createdBy"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="modifiedByLabel" for="post-modifiedBy">
-                  <Translate contentKey="minhShopApp.post.modifiedBy">Modified By</Translate>
-                </Label>
-                <AvField id="post-modifiedBy" data-cy="modifiedBy" type="text" name="modifiedBy"/>
-                <UncontrolledTooltip target="modifiedByLabel">
-                  <Translate contentKey="minhShopApp.post.help.modifiedBy"/>
                 </UncontrolledTooltip>
               </AvGroup>
               <AvGroup>

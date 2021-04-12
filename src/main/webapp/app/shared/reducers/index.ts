@@ -21,7 +21,6 @@ import typePost, {TypePostState} from 'app/entities/type-post/type-post.reducer'
 // prettier-ignore
 import typePostFilter, {TypePostFilterState} from 'app/entities/type-post-filter/type-post-filter.reducer';
 // prettier-ignore
-import image, {ImageState} from 'app/entities/image/image.reducer';
 // prettier-ignore
 import file, {FileState} from 'app/entities/file/file.reducer';
 // prettier-ignore
@@ -40,6 +39,7 @@ import orderShop, {OrderState} from 'app/modules/shopcart/reducers/order.reducer
 //todo test shopcart
 import productShop, {ProductState} from 'app/modules/shopcart/reducers/products.reducer';
 
+// prettier-ignore
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState
@@ -58,7 +58,6 @@ export interface IRootState
   readonly simplePost: SimplePostState;
   readonly typePost: TypePostState;
   readonly typePostFilter: TypePostFilterState;
-  readonly image: ImageState;
   readonly file: FileState;
   readonly payment: PaymentState;
   readonly bill: BillState;
@@ -89,7 +88,6 @@ const rootReducer = combineReducers<IRootState>({
   simplePost,
   typePost,
   typePostFilter,
-  image,
   file,
   payment,
   bill,

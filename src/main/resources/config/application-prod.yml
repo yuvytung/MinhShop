@@ -18,7 +18,7 @@ yuvytung:
   server:
     host: dev.catiny.com
     ssh-ffmpeg:
-      host: localhost
+      host: dev.catiny.com
       port: 10022
       username: root
       password: rootVs.

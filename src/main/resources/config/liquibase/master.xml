@@ -19,7 +19,6 @@
   <include file="config/liquibase/changelog/20210130161419_added_entity_SimplePost.xml" relativeToChangelogFile="false"/>
   <include file="config/liquibase/changelog/20210130161420_added_entity_TypePost.xml" relativeToChangelogFile="false"/>
   <include file="config/liquibase/changelog/20210130161421_added_entity_TypePostFilter.xml" relativeToChangelogFile="false"/>
-  <include file="config/liquibase/changelog/20210130161422_added_entity_Image.xml" relativeToChangelogFile="false"/>
   <include file="config/liquibase/changelog/20210130161423_added_entity_File.xml" relativeToChangelogFile="false"/>
   <include file="config/liquibase/changelog/20210130161424_added_entity_Payment.xml" relativeToChangelogFile="false"/>
   <include file="config/liquibase/changelog/20210130161425_added_entity_Bill.xml" relativeToChangelogFile="false"/>

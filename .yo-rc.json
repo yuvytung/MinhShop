@@ -65,7 +65,6 @@
       "SimplePost",
       "TypePost",
       "TypePostFilter",
-      "Image",
       "Payment",
       "Bill",
       "UserOtherInfo",

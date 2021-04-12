@@ -8,7 +8,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {IRootState} from 'app/shared/reducers';
 import {getEntities as getSimplePosts} from 'app/entities/simple-post/simple-post.reducer';
 import {createEntity, getEntity, reset, setBlob, updateEntity} from './post-details.reducer';
-import {convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime} from 'app/shared/util/date-utils';
+import {convertDateTimeToServer} from 'app/shared/util/date-utils';
 
 // froala
 import FroalaEditor from 'react-froala-wysiwyg';
@@ -301,85 +301,6 @@ export const PostDetailsUpdate = (props: IPostDetailsUpdateProps) =>
                 {/*<FroalaEditorImg/>*/}
                 <UncontrolledTooltip target="contentLabel">
                   <Translate contentKey="minhShopApp.postDetails.help.content"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="searchFieldLabel" for="post-details-searchField">
-                  <Translate contentKey="minhShopApp.postDetails.searchField">Search Field</Translate>
-                </Label>
-                <AvInput id="post-details-searchField" data-cy="searchField" type="textarea" name="searchField"/>
-                <UncontrolledTooltip target="searchFieldLabel">
-                  <Translate contentKey="minhShopApp.postDetails.help.searchField"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="roleLabel" for="post-details-role">
-                  <Translate contentKey="minhShopApp.postDetails.role">Role</Translate>
-                </Label>
-                <AvField id="post-details-role" data-cy="role" type="text" name="role"/>
-                <UncontrolledTooltip target="roleLabel">
-                  <Translate contentKey="minhShopApp.postDetails.help.role"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="createdDateLabel" for="post-details-createdDate">
-                  <Translate contentKey="minhShopApp.postDetails.createdDate">Created Date</Translate>
-                </Label>
-                <AvInput
-                  id="post-details-createdDate"
-                  data-cy="createdDate"
-                  type="datetime-local"
-                  className="form-control"
-                  name="createdDate"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.postDetailsEntity.createdDate)}
-                />
-                <UncontrolledTooltip target="createdDateLabel">
-                  <Translate contentKey="minhShopApp.postDetails.help.createdDate"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="modifiedDateLabel" for="post-details-modifiedDate">
-                  <Translate contentKey="minhShopApp.postDetails.modifiedDate">Modified Date</Translate>
-                </Label>
-                <AvInput
-                  id="post-details-modifiedDate"
-                  data-cy="modifiedDate"
-                  type="datetime-local"
-                  className="form-control"
-                  name="modifiedDate"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.postDetailsEntity.modifiedDate)}
-                />
-                <UncontrolledTooltip target="modifiedDateLabel">
-                  <Translate contentKey="minhShopApp.postDetails.help.modifiedDate"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="createdByLabel" for="post-details-createdBy">
-                  <Translate contentKey="minhShopApp.postDetails.createdBy">Created By</Translate>
-                </Label>
-                <AvField id="post-details-createdBy" data-cy="createdBy" type="text" name="createdBy"/>
-                <UncontrolledTooltip target="createdByLabel">
-                  <Translate contentKey="minhShopApp.postDetails.help.createdBy"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="modifiedByLabel" for="post-details-modifiedBy">
-                  <Translate contentKey="minhShopApp.postDetails.modifiedBy">Modified By</Translate>
-                </Label>
-                <AvField id="post-details-modifiedBy" data-cy="modifiedBy" type="text" name="modifiedBy"/>
-                <UncontrolledTooltip target="modifiedByLabel">
-                  <Translate contentKey="minhShopApp.postDetails.help.modifiedBy"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="dataSizeLabel" for="post-details-dataSize">
-                  <Translate contentKey="minhShopApp.postDetails.dataSize">Data Size</Translate>
-                </Label>
-                <AvField id="post-details-dataSize" data-cy="dataSize" type="string" className="form-control" name="dataSize"/>
-                <UncontrolledTooltip target="dataSizeLabel">
-                  <Translate contentKey="minhShopApp.postDetails.help.dataSize"/>
                 </UncontrolledTooltip>
               </AvGroup>
               <AvGroup>

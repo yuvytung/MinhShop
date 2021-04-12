@@ -10,7 +10,7 @@ import {getEntities as getPostDetails} from 'app/entities/post-details/post-deta
 import {getEntities as getTypePosts} from 'app/entities/type-post/type-post.reducer';
 import {getEntities as getTypePostFilters} from 'app/entities/type-post-filter/type-post-filter.reducer';
 import {createEntity, getEntity, reset, setBlob, updateEntity} from './simple-post.reducer';
-import {convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime} from 'app/shared/util/date-utils';
+import {convertDateTimeToServer} from 'app/shared/util/date-utils';
 import {mapIdList} from 'app/shared/util/entity-utils';
 
 export interface ISimplePostUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }>
@@ -238,85 +238,6 @@ export const SimplePostUpdate = (props: ISimplePostUpdateProps) =>
                 <AvField id="simple-post-otherInfo" data-cy="otherInfo" type="text" name="otherInfo"/>
                 <UncontrolledTooltip target="otherInfoLabel">
                   <Translate contentKey="minhShopApp.simplePost.help.otherInfo"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="searchFieldLabel" for="simple-post-searchField">
-                  <Translate contentKey="minhShopApp.simplePost.searchField">Search Field</Translate>
-                </Label>
-                <AvInput id="simple-post-searchField" data-cy="searchField" type="textarea" name="searchField"/>
-                <UncontrolledTooltip target="searchFieldLabel">
-                  <Translate contentKey="minhShopApp.simplePost.help.searchField"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="roleLabel" for="simple-post-role">
-                  <Translate contentKey="minhShopApp.simplePost.role">Role</Translate>
-                </Label>
-                <AvField id="simple-post-role" data-cy="role" type="text" name="role"/>
-                <UncontrolledTooltip target="roleLabel">
-                  <Translate contentKey="minhShopApp.simplePost.help.role"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="createdDateLabel" for="simple-post-createdDate">
-                  <Translate contentKey="minhShopApp.simplePost.createdDate">Created Date</Translate>
-                </Label>
-                <AvInput
-                  id="simple-post-createdDate"
-                  data-cy="createdDate"
-                  type="datetime-local"
-                  className="form-control"
-                  name="createdDate"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.simplePostEntity.createdDate)}
-                />
-                <UncontrolledTooltip target="createdDateLabel">
-                  <Translate contentKey="minhShopApp.simplePost.help.createdDate"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="modifiedDateLabel" for="simple-post-modifiedDate">
-                  <Translate contentKey="minhShopApp.simplePost.modifiedDate">Modified Date</Translate>
-                </Label>
-                <AvInput
-                  id="simple-post-modifiedDate"
-                  data-cy="modifiedDate"
-                  type="datetime-local"
-                  className="form-control"
-                  name="modifiedDate"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.simplePostEntity.modifiedDate)}
-                />
-                <UncontrolledTooltip target="modifiedDateLabel">
-                  <Translate contentKey="minhShopApp.simplePost.help.modifiedDate"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="createdByLabel" for="simple-post-createdBy">
-                  <Translate contentKey="minhShopApp.simplePost.createdBy">Created By</Translate>
-                </Label>
-                <AvField id="simple-post-createdBy" data-cy="createdBy" type="text" name="createdBy"/>
-                <UncontrolledTooltip target="createdByLabel">
-                  <Translate contentKey="minhShopApp.simplePost.help.createdBy"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="modifiedByLabel" for="simple-post-modifiedBy">
-                  <Translate contentKey="minhShopApp.simplePost.modifiedBy">Modified By</Translate>
-                </Label>
-                <AvField id="simple-post-modifiedBy" data-cy="modifiedBy" type="text" name="modifiedBy"/>
-                <UncontrolledTooltip target="modifiedByLabel">
-                  <Translate contentKey="minhShopApp.simplePost.help.modifiedBy"/>
-                </UncontrolledTooltip>
-              </AvGroup>
-              <AvGroup>
-                <Label id="dataSizeLabel" for="simple-post-dataSize">
-                  <Translate contentKey="minhShopApp.simplePost.dataSize">Data Size</Translate>
-                </Label>
-                <AvField id="simple-post-dataSize" data-cy="dataSize" type="string" className="form-control" name="dataSize"/>
-                <UncontrolledTooltip target="dataSizeLabel">
-                  <Translate contentKey="minhShopApp.simplePost.help.dataSize"/>
                 </UncontrolledTooltip>
               </AvGroup>
               <AvGroup>

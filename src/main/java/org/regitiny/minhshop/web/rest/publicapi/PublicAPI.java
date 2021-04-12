@@ -2,9 +2,7 @@ package org.regitiny.minhshop.web.rest.publicapi;
 
 import lombok.extern.log4j.Log4j2;
 import org.regitiny.minhshop.service.FileService;
-import org.regitiny.minhshop.service.ImageService;
 import org.regitiny.minhshop.service.business.FfmpegBusiness;
-import org.regitiny.minhshop.service.dto.ImageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -18,11 +16,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.time.Instant;
-import java.util.Optional;
 import java.util.logging.Level;
 
 @Log4j2
@@ -33,42 +29,25 @@ public class PublicAPI
 
   //  public static final String VideoUploadingDir = "D:\\";
   public static final String VideoUploadingDir = "/root/minh-shop/";
-  private final ImageService imageService;
   private final FileService fileService;
   private final FfmpegBusiness ffmpegBusiness;
   @Autowired
   VideoStreamingService service;
 
 
-  public PublicAPI(ImageService imageService, FileService fileService, FfmpegBusiness ffmpegBusiness)
+  public PublicAPI(FileService fileService, FfmpegBusiness ffmpegBusiness)
   {
-    this.imageService = imageService;
     this.fileService = fileService;
     this.ffmpegBusiness = ffmpegBusiness;
   }
 
-  @GetMapping("/images/{nameImage}")
-  public ResponseEntity<byte[]> getImage(@PathVariable String nameImage) throws FileNotFoundException
-  {
-    log.debug("REST request to get Image : {}", nameImage);
-    Optional<ImageDTO> result = imageService.findByNameImage(nameImage);
-    if (result.isPresent())
-    {
-      ImageDTO imageDTO = result.get();
-      HttpHeaders headerUtil = new HttpHeaders();
-      headerUtil.setContentType(MediaType.IMAGE_JPEG);
-      return ResponseEntity.ok().headers(headerUtil).body(imageDTO.getImageData());
-    }
-
-    throw new FileNotFoundException();
-  }
 //  public static final String VideoUploadingDir = System.getProperty("user.dir") + "/Uploads/Posts/Videos";
 
   private int songSong(int in)
   {
     try
     {
-      Thread.sleep(in * 1000);
+      Thread.sleep(in * 1000L);
       log.info("có cái đéo gì đó ở đây đó là  {}", in);
       return in;
     }

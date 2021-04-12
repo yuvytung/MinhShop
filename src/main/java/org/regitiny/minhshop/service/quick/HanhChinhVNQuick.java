@@ -38,7 +38,7 @@ public class HanhChinhVNQuick
 //      File file = ResourceUtils.getFile("classpath:config/data/dist_vn/tree.json");
 //      String stringJsonData = Files.readString(file.toPath());
       InputStream inputStream = getClass().getResourceAsStream("/config/data/dist_vn/tree.json");
-      String stringJsonData = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
+      String stringJsonData = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream))).lines().collect(Collectors.joining("\n"));
       //      log.debug(stringJsonData);
       JSONObject jsonObjectData = new JSONObject(stringJsonData);
 

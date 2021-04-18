@@ -20,7 +20,6 @@ import static org.regitiny.minhshop.config.WebsocketConfiguration.IP_ADDRESS;
 @Controller
 public class ActivityService implements ApplicationListener<SessionDisconnectEvent>
 {
-
   private static final Logger log = LoggerFactory.getLogger(ActivityService.class);
 
   private final SimpMessageSendingOperations messagingTemplate;
@@ -51,3 +50,5 @@ public class ActivityService implements ApplicationListener<SessionDisconnectEve
     messagingTemplate.convertAndSend("/topic/tracker", activityDTO);
   }
 }
+
+

@@ -50,8 +50,22 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer
       .ofNullable(jHipsterProperties.getCors().getAllowedOrigins())
       .map(origins -> origins.toArray(new String[0]))
       .orElse(new String[0]);
-    registry
-      .addEndpoint("/websocket/tracker")
+    registry.addEndpoint("/websocket/tracker")
+      .setHandshakeHandler(defaultHandshakeHandler())
+      .setAllowedOrigins(allowedOrigins)
+      .withSockJS()
+      .setInterceptors(httpSessionHandshakeInterceptor());
+    registry.addEndpoint("/websocket/message")
+      .setHandshakeHandler(defaultHandshakeHandler())
+      .setAllowedOrigins(allowedOrigins)
+      .withSockJS()
+      .setInterceptors(httpSessionHandshakeInterceptor());
+    registry.addEndpoint("/websocket/live-streaming")
+      .setHandshakeHandler(defaultHandshakeHandler())
+      .setAllowedOrigins(allowedOrigins)
+      .withSockJS()
+      .setInterceptors(httpSessionHandshakeInterceptor());
+    registry.addEndpoint("/websocket/video-call")
       .setHandshakeHandler(defaultHandshakeHandler())
       .setAllowedOrigins(allowedOrigins)
       .withSockJS()

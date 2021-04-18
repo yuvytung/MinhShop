@@ -77,6 +77,7 @@ import LoadingBar from 'react-redux-loading-bar';
 
 import {Brand, Contact, Home, Introduction} from './header-components';
 import {AccountMenu, AdminMenu, EntitiesMenu, LocaleMenu} from '../menus';
+import {Other} from "app/shared/layout/menus/other";
 
 export interface IHeaderProps
 {
@@ -132,18 +133,13 @@ const Header = (props: IHeaderProps) =>
               <Contact/>
             </NavItem>
             {props.isAuthenticated && props.isAdmin && <EntitiesMenu/>}
-            {/*<NavItem>*/}
+            {props.isAuthenticated && <Other/>}
+
             {props.isAuthenticated && props.isAdmin && (
               <AdminMenu showOpenAPI={props.isOpenAPIEnabled} showDatabase={!props.isInProduction}/>
             )}
-            {/*</NavItem>*/}
-            {/*<NavItem>*/}
             <LocaleMenu currentLocale={props.currentLocale} onClick={handleLocaleChange}/>
-            {/*</NavItem> */}
-            {/*ngon ngu*/}
-            {/*<NavItem>*/}
             <AccountMenu isAuthenticated={props.isAuthenticated}/>
-            {/*</NavItem> */} {/*tai khoan*/}
           </Nav>
         </Collapse>
       </Navbar>

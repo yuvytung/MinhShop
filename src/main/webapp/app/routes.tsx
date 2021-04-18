@@ -26,6 +26,7 @@ import PageProduct from 'app/page-product';
 import CheckoutCart from 'app/modules/checkout-cart/checkout-cart';
 import CompleteOrder from 'app/modules/checkout-cart/complete-order';
 import ResultSearch from 'app/modules/result-search/result-search';
+import Chat from './modules/web-socket/chat/chat';
 
 const BreadcrumbLayout = props =>
 {
@@ -87,6 +88,7 @@ const Routes = props =>
         <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]}/>
         <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]}/>
         <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]}/>
+        <PrivateRoute path="/chat" component={Chat} hasAnyAuthorities={[AUTHORITIES.USER]}/>
         <ErrorBoundaryRoute path="/" exact component={Home}/>
         {/*<Page path="/" exact component={Home} title="Home"/>*/}
 

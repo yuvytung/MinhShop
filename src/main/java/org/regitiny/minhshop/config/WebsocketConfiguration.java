@@ -13,6 +13,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import tech.jhipster.config.JHipsterProperties;
@@ -70,6 +71,15 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer
       .setAllowedOrigins(allowedOrigins)
       .withSockJS()
       .setInterceptors(httpSessionHandshakeInterceptor());
+  }
+
+  @Override
+  public void configureWebSocketTransport(WebSocketTransportRegistration registry)
+  {
+    WebSocketMessageBrokerConfigurer.super.configureWebSocketTransport(registry);
+    registry.setSendBufferSizeLimit(2 * 1024 * 1024);
+    registry.setMessageSizeLimit(2 * 1024 * 1024);
+    registry.setSendTimeLimit(5 * 1000);
   }
 
   @Bean

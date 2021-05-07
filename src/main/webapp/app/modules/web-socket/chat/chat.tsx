@@ -4,13 +4,12 @@ import Webcam from 'react-webcam';
 import {Observable} from 'rxjs';
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
-import {Base64} from 'js-base64';
 
-let al;
-
+const mediaSource = new MediaSource();
+let sourceBuffer = null;
+mediaSource.addEventListener("sourceopen", () => sourceBuffer = mediaSource.addSourceBuffer("video/webm;codecs=vp8,opus"))
 
 let stompClient = null;
-
 let subscriber = null;
 let connection: Promise<any>;
 let connectedPromise: any = null;
@@ -21,6 +20,17 @@ let alreadyConnectedOnce = false;
 
 const Chat = props =>
 {
+  const webcamRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const [capturing, setCapturing] = useState(false);
+
+  useEffect(() =>
+  {
+    connect();
+    subscribe().then();
+  }, []);
+
+  const authToken = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
 
   const createConnection = (): Promise<any> =>
     new Promise((resolve, reject) => (connectedPromise = resolve));
@@ -47,10 +57,7 @@ const Chat = props =>
         {
           const result = JSON.parse(data.body);
           const videoBase64 = result.data.split(",")[2];
-          const videoBytes = Base64.decode(videoBase64);
-          fetch(result.data.replace(";codecs=avc1,opus", "")).then(res => res.blob())
-            // .then(blob => window.console.log(blob.text()))
-            .then(blob => process(blob));
+          process(videoBase64);
         }
       )
     );
@@ -72,7 +79,6 @@ const Chat = props =>
 
     const headers = {};
     let url = '//' + loc.host + baseHref + '/websocket/video-call';
-    const authToken = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
     if (authToken)
       url += '?access_token=' + authToken;
 
@@ -83,7 +89,7 @@ const Chat = props =>
     {
       connectedPromise('success');
       connectedPromise = null;
-      // sendActivity(window.location.pathname);
+      // sendActivity(); first message after connect success
       alreadyConnectedOnce = true;
     });
   };
@@ -108,78 +114,38 @@ const Chat = props =>
   };
 
 
-  const access_token = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
-  useEffect(() =>
-  {
-    connect();
-    subscribe();
-  }, []);
-
-  const webcamRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
-  const [capturing, setCapturing] = useState(false);
-  const [recordedChunks, setRecordedChunks] = useState([]);
-
   const handleStartCaptureClick = useCallback(() =>
   {
     setCapturing(true);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {mimeType: "video/webm"});
+    // videoRef.current.srcObject=webcamRef.current.stream;
     mediaRecorderRef.current.ondataavailable = handleDataAvailable;
-    mediaRecorderRef.current.start(500);
+    mediaRecorderRef.current.start(50);
   }, [webcamRef, setCapturing, mediaRecorderRef]);
 
   const handleDataAvailable = useCallback(({data}) =>
   {
     if (data.size > 0)
     {
-      // setRecordedChunks((prev) =>
-      // {
-      //   window.console.log(prev);
-      //   const a = prev.concat(data);
-      //   window.console.log(a[0].text());
-      //   return a;
-      // } );
       const reader = new FileReader();
       reader.readAsDataURL(data);
       reader.onloadend = () => sendActivity(reader.result, "chạy mẹ nó rồi");
-      // window.console.log(subscribe());
     }
-  }, [setRecordedChunks]);
+  }, []);
 
-  const process = useCallback((x) =>
+  const process = (x) =>
   {
-    const data = x.slice(0, x.size, 'video/x-matroska;codecs=avc1,opus')
-    if (data.size > 0)
-    {
-      setRecordedChunks((prev) =>
-      {
-        window.console.log(prev);
-        const a = prev.concat(data);
-        window.console.log(a[0].text());
-        return a;
-      });
-    }
-  }, [setRecordedChunks]);
+    const data = Uint8Array.from(atob(x), c => c.charCodeAt(0))
+    sourceBuffer.appendBuffer(new Uint8Array(data));
+  };
 
   const handleStopCaptureClick = useCallback(() =>
   {
     mediaRecorderRef.current.stop();
     setCapturing(false);
   }, [mediaRecorderRef, webcamRef, setCapturing]);
-
-  const handleDownload = useCallback(() =>
-  {
-    if (recordedChunks.length)
-    {
-
-      const blob = new Blob(recordedChunks, {type: "video/webm"});
-      al = URL.createObjectURL(blob);
-      setRecordedChunks([]);
-    }
-  }, [recordedChunks]);
-
 
   return (
     <div>
@@ -188,11 +154,17 @@ const Chat = props =>
       {capturing ?
         (<button onClick={handleStopCaptureClick}>Stop Capture</button>)
         : (<button onClick={handleStartCaptureClick}>Start Capture</button>)}
-      {recordedChunks.length > 0 && (<button onClick={handleDownload}>Download</button>)}
-      <video playsInline loop controls src={al}/>
-
+      <video autoPlay playsInline loop controls preload={"none"} src={window.URL.createObjectURL(mediaSource)}/>
     </div>
   );
+};
+
+const videoConstraints = {
+  width: 1280,
+  height: 720,
+  // facingMode: "user",
+  // whiteBalanceMode : "none"
+  frameRate: 30
 };
 
 export default Chat;

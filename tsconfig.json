@@ -20,7 +20,6 @@
     "types": [
       "jest",
       "webpack-env",
-      "dom-mediacapture-record"
     ],
     "allowJs": true,
     "checkJs": false,

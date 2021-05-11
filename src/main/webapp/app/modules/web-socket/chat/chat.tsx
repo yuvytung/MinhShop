@@ -5,9 +5,7 @@ import {Observable} from 'rxjs';
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
 
-const mediaSource = new MediaSource();
 let sourceBuffer = null;
-mediaSource.addEventListener("sourceopen", () => sourceBuffer = mediaSource.addSourceBuffer("video/webm;codecs=vp8,opus"))
 
 let stompClient = null;
 let subscriber = null;
@@ -21,6 +19,7 @@ let alreadyConnectedOnce = false;
 const Chat = props =>
 {
   const webcamRef = useRef(null);
+  const videoRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const [capturing, setCapturing] = useState(false);
 
@@ -53,12 +52,7 @@ const Chat = props =>
       subscriber = stompClient.subscribe
       (
         '/topic/video-call/group/1234x',
-        data =>
-        {
-          const result = JSON.parse(data.body);
-          const videoBase64 = result.data.split(",")[2];
-          process(videoBase64);
-        }
+        data => process(data)
       )
     );
 
@@ -84,6 +78,7 @@ const Chat = props =>
 
     const socket = new SockJS(url);
     stompClient = Stomp.over(socket, {protocols: ['v12.stomp']});
+    stompClient.debug=()=>{};// don't show debug console log
 
     stompClient.connect(headers, () =>
     {
@@ -114,15 +109,33 @@ const Chat = props =>
   };
 
 
-  const handleStartCaptureClick = useCallback(() =>
+  const handleStartCaptureClick = useCallback(async (type) =>
   {
     setCapturing(true);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {mimeType: "video/webm"});
+    const videoConstants ={video:{frameRate: 10},audio:true}
+    const mediaSource = new MediaSource();
+    if (type==="camera")
+    {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mediaRecorderRef.current = new MediaRecorder(
+        await navigator.mediaDevices.getUserMedia(videoConstants)
+        , {mimeType: "video/webm"});
+      mediaSource.addEventListener("sourceopen", () => sourceBuffer = mediaSource.addSourceBuffer("video/webm;codecs=vp8,opus"))
+    }
+    else
+    {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      mediaRecorderRef.current = new MediaRecorder(await navigator.mediaDevices.getDisplayMedia(videoConstants) , {mimeType: "video/webm"});
+      mediaSource.addEventListener("sourceopen", () => sourceBuffer = mediaSource.addSourceBuffer("video/webm;codecs=vp8"))
+    }
+
+    // mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {mimeType: "video/webm"});
     // videoRef.current.srcObject=webcamRef.current.stream;
     mediaRecorderRef.current.ondataavailable = handleDataAvailable;
-    mediaRecorderRef.current.start(50);
+    mediaRecorderRef.current.start(100);
+    videoRef.current.src=window.URL.createObjectURL(mediaSource);
   }, [webcamRef, setCapturing, mediaRecorderRef]);
 
   const handleDataAvailable = useCallback(({data}) =>
@@ -135,9 +148,12 @@ const Chat = props =>
     }
   }, []);
 
-  const process = (x) =>
+  const process = (videoData) =>
   {
-    const data = Uint8Array.from(atob(x), c => c.charCodeAt(0))
+    const result = JSON.parse(videoData.body);
+    let videoBase64 =  result.data.split(",");
+    videoBase64=videoBase64[videoBase64.length-1];
+    const data = Uint8Array.from(atob(videoBase64), c => c.charCodeAt(0));
     sourceBuffer.appendBuffer(new Uint8Array(data));
   };
 
@@ -150,11 +166,14 @@ const Chat = props =>
   return (
     <div>
       <h1>chat</h1>
-      <Webcam audio={true} ref={webcamRef}/>
+      {/*<Webcam audio={true} ref={webcamRef} videoConstraints={videoConstraints}/>*/}
       {capturing ?
         (<button onClick={handleStopCaptureClick}>Stop Capture</button>)
-        : (<button onClick={handleStartCaptureClick}>Start Capture</button>)}
-      <video autoPlay playsInline loop controls preload={"none"} src={window.URL.createObjectURL(mediaSource)}/>
+        : (<div>
+          <button onClick={()=>handleStartCaptureClick("camera")}>Start camera</button>
+          <button onClick={()=>handleStartCaptureClick("display")}>Start display</button>
+        </div>)}
+      <video autoPlay playsInline muted loop controls preload={"none"} ref={videoRef} />
     </div>
   );
 };
@@ -162,7 +181,7 @@ const Chat = props =>
 const videoConstraints = {
   width: 1280,
   height: 720,
-  // facingMode: "user",
+  facingMode: "environment",
   // whiteBalanceMode : "none"
   frameRate: 30
 };

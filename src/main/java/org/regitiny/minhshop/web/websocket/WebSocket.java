@@ -32,17 +32,17 @@ public class WebSocket implements ApplicationListener<SessionDisconnectEvent>
   @SendTo("/topic/video-call/group/1234x")
   public VideoCallDTO sendActivity(@Payload VideoCallDTO x, StompHeaderAccessor stompHeaderAccessor, Principal principal)
   {
-    byte[] decodedBytes = Base64.getDecoder().decode(x.getData().split(",")[2]);
-    File tempFile = new File("/data/test/test.webm");
-    try (FileOutputStream out = new FileOutputStream(tempFile, true))
-    {
-      log.debug("create new file output VideoCall (webcam) is: {}", tempFile.createNewFile());
-      out.write(decodedBytes);
-    }
-    catch (Exception e)
-    {
-      log.debug(e);
-    }
+//    byte[] decodedBytes = Base64.getDecoder().decode(x.getData().split(",")[2]);
+//    File tempFile = new File("/data/test/test.webm");
+//    try (FileOutputStream out = new FileOutputStream(tempFile, true))
+//    {
+//      log.debug("create new file output VideoCall (webcam) is: {}", tempFile.createNewFile());
+//      out.write(decodedBytes);
+//    }
+//    catch (Exception e)
+//    {
+//      log.debug(e);
+//    }
     return x;
   }
 
